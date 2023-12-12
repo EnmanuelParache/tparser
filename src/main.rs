@@ -156,7 +156,7 @@ fn main() {
     let re = Regex::new(r"^(?<hour>\d{1,5}):(?<minutes>\d{1,2}):(?<seconds>\d{1,2})$").unwrap();
 
     let Some(caps) = re.captures(&args.time) else {
-        print!("No match");
+        println!("No match");
         return;
     };
 
@@ -166,6 +166,7 @@ fn main() {
     time.set_minutes(caps["minutes"].parse().unwrap());
     time.set_seconds(caps["seconds"].parse().unwrap());
 
+    #[cfg(debug_assertions)]
     println!("{:?}", time);
 
     match args.unit.into() {
