@@ -50,7 +50,7 @@ trait ToTimeUnits {
 /// hour, minutes and seconds
 #[derive(Debug)]
 struct Time {
-    hour: u8,
+    hour: u16,
     minutes: u8,
     seconds: u8,
 }
@@ -65,7 +65,7 @@ impl Time {
         }
     }
 
-    fn set_hour(&mut self, hour: u8) {
+    fn set_hour(&mut self, hour: u16) {
         self.hour = hour;
     }
 
@@ -153,7 +153,7 @@ mod tests {
 
 fn main() {
     let args = Args::parse();
-    let re = Regex::new(r"^(?<hour>\d{1,2}):(?<minutes>\d{1,2}):(?<seconds>\d{1,2})$").unwrap();
+    let re = Regex::new(r"^(?<hour>\d{1,5}):(?<minutes>\d{1,2}):(?<seconds>\d{1,2})$").unwrap();
 
     let Some(caps) = re.captures(&args.time) else {
         print!("No match");
