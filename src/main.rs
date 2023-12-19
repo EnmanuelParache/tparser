@@ -6,7 +6,6 @@ use regex::Regex;
 #[command(author, version, about, long_about = None)]
 struct Args {
     /// Time to be parsed
-    #[arg(short, long)]
     time: String,
 
     /// h: Hours

@@ -33,26 +33,26 @@ After building and installing the project
 
 ### To hours (default)
 ```shell
-tparser -t 23:59:59 
+tparser 23:59:59 
 23.999722
 ```
 
 ### To minutes 
 ```shell
-tparser -t 23:59:59  -u m
+tparser 23:59:59  -u m
 1439.9833
 ```
 
 ### To seconds
 ```shell
-tparser -t 23:59:59 -u s
+tparser 23:59:59 -u s
 86399
 ```
 ### Debug
 When running debug build additional information (Time struct) will be printed
 
 ```shell
-./target/debug/tparser -t 23:59:59 -u s            
+./target/debug/tparser 23:59:59 -u s            
 Time { hour: 23, minutes: 59, seconds: 59 }
 86399
 ```
@@ -60,9 +60,9 @@ Time { hour: 23, minutes: 59, seconds: 59 }
 or with cargo run
 
 ```shell
-cargo run -- -t 23:59:59 -u s
+cargo run -- 23:59:59 -u s
     Finished dev [unoptimized + debuginfo] target(s) in 0.03s
-     Running `target/debug/tparser -t '23:59:59' -u s`
+     Running `target/debug/tparser '23:59:59' -u s`
 Time { hour: 23, minutes: 59, seconds: 59 }
 86399
 ```
