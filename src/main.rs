@@ -8,9 +8,10 @@ struct Args {
     /// Time to be parsed
     time: String,
 
-    /// h: Hours
-    /// m: Minutes
-    /// s: Seconds
+    /// Output unit can be
+    /// Hours (h),
+    /// Minutes (m) or
+    /// Seconds (s)
     #[arg(short, long, default_value_t = 'h')]
     unit: char,
 }
