@@ -1,28 +1,6 @@
 use clap::Parser;
 use regex::Regex;
 
-/// Time units supported
-#[derive(Debug, Clone)]
-enum TimeUnits {
-    Hour,
-    Minutes,
-    Seconds,
-}
-
-/// Workaround to convert u8 to TimeUnits
-/// and avoid implementing many other traits
-/// required for Args Parser
-impl From<u8> for TimeUnits {
-    fn from(value: u8) -> Self {
-        match value {
-            0 => TimeUnits::Hour,
-            1 => TimeUnits::Minutes,
-            2 => TimeUnits::Seconds,
-            _ => TimeUnits::Hour,
-        }
-    }
-}
-
 /// Simple program to parse time
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -31,11 +9,11 @@ struct Args {
     #[arg(short, long)]
     time: String,
 
-    /// 0: Hours
-    /// 1: Minutes
-    /// 2: Seconds
-    #[arg(short, long, default_value_t = 0)]
-    unit: u8,
+    /// h: Hours
+    /// m: Minutes
+    /// s: Seconds
+    #[arg(short, long, default_value_t = 'h')]
+    unit: char,
 }
 
 /// Trait to convert to different
@@ -169,9 +147,9 @@ fn main() {
     #[cfg(debug_assertions)]
     println!("{:?}", time);
 
-    match args.unit.into() {
-        TimeUnits::Hour => println!("{}", time.to_hours()),
-        TimeUnits::Minutes => println!("{}", time.to_minutes()),
-        TimeUnits::Seconds => println!("{}", time.to_seconds()),
+    match args.unit {
+        's' => println!("{}", time.to_seconds()),
+        'm' => println!("{}", time.to_minutes()),
+        _ => println!("{}", time.to_hours()),
     }
 }
