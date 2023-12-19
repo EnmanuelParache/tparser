@@ -57,3 +57,11 @@ Time { hour: 23, minutes: 59, seconds: 59 }
 86399
 ```
 
+or with cargo run
+
+```shell
+cargo run -- -t 23:59:59 -u s            
+Time { hour: 23, minutes: 59, seconds: 59 }
+86399
+```
+
