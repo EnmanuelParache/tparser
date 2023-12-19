@@ -5,7 +5,7 @@ use regex::Regex;
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
-    /// Time to be parsed
+    /// Time in the hh:mm:ss form to be parsed
     time: String,
 
     /// Output unit can be
