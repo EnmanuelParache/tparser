@@ -60,7 +60,9 @@ Time { hour: 23, minutes: 59, seconds: 59 }
 or with cargo run
 
 ```shell
-cargo run -- -t 23:59:59 -u s            
+cargo run -- -t 23:59:59 -u s
+    Finished dev [unoptimized + debuginfo] target(s) in 0.03s
+     Running `target/debug/tparser -t '23:59:59' -u s`
 Time { hour: 23, minutes: 59, seconds: 59 }
 86399
 ```
