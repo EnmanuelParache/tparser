@@ -133,7 +133,7 @@ fn main() {
     let re = Regex::new(r"^(?<hour>\d{1,5}):(?<minutes>\d{1,2}):(?<seconds>\d{1,2})$").unwrap();
 
     let Some(caps) = re.captures(&args.time) else {
-        println!("No match");
+        println!("Time argument must match 'hh:mm:ss' pattern");
         return;
     };
 
