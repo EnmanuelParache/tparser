@@ -1,5 +1,5 @@
 # TPARSER
-Simple cli to parse time string `hh:mm:ss` to hours, minutes or seconds.
+Simple CLI to parse time string `hh:mm:ss` to hours, minutes or seconds.
 
 ## Run tests
 ```shell
