@@ -1,6 +1,6 @@
 use clap::Parser;
 use regex::Regex;
-
+use std::fmt::Display;
 /// Simple program to parse time
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -14,6 +14,10 @@ struct Args {
     /// Seconds (s)
     #[arg(short, long, default_value_t = 'h')]
     unit: char,
+
+    /// Decompose
+    #[arg(short, long)]
+    decompose: bool,
 }
 
 /// Trait to convert to different
@@ -24,9 +28,17 @@ trait ToTimeUnits {
     fn to_seconds(&self) -> f32;
 }
 
+/// Trait to convert from different
+/// time units
+trait FromTimeUnits {
+    fn from_hours(&self) -> Time;
+    fn from_minutes(&self) -> Time;
+    fn from_seconds(&self) -> Time;
+}
+
 /// Time struct to hold
 /// hour, minutes and seconds
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 struct Time {
     hour: u16,
     minutes: u8,
@@ -72,6 +84,41 @@ impl ToTimeUnits for Time {
         (f32::from(self.hour) * 60.0 * 60.0)
             + (f32::from(self.minutes) * 60.0)
             + (f32::from(self.seconds))
+    }
+}
+
+impl Display for Time {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}:{}:{}", self.hour, self.minutes, self.seconds)
+    }
+}
+
+//
+// Trait to convert f32 into time struct
+//
+impl FromTimeUnits for f32 {
+    fn from_hours(&self) -> Time {
+        Time {
+            hour: self.trunc() as u16,
+            minutes: ((self * 60.0) % 60.0).trunc() as u8,
+            seconds: ((self * 3600.0) % 60.0).trunc() as u8,
+        }
+    }
+
+    fn from_minutes(&self) -> Time {
+        Time {
+            hour: (self / 60.0).trunc() as u16,
+            minutes: (self % 60.0).trunc() as u8,
+            seconds: ((self * 60.0) % 60.0).trunc() as u8,
+        }
+    }
+
+    fn from_seconds(&self) -> Time {
+        Time {
+            hour: (self / 3600.0).trunc() as u16,
+            minutes: ((self / 60.0) % 60.0).trunc() as u8,
+            seconds: (self % 60.0).trunc() as u8,
+        }
     }
 }
 
@@ -127,12 +174,46 @@ mod tests {
 
         assert_eq!(time.to_seconds(), 1.0);
     }
+
+    #[test]
+    fn test_from_hours() {
+        assert_eq!(
+            12.508333.from_hours(),
+            Time {
+                hour: 12,
+                minutes: 30,
+                seconds: 30
+            }
+        );
+    }
+
+    #[test]
+    fn test_from_minutes() {
+        assert_eq!(
+            61.50.from_minutes(),
+            Time {
+                hour: 1,
+                minutes: 1,
+                seconds: 30
+            }
+        );
+    }
+
+    #[test]
+    fn test_from_seconds() {
+        assert_eq!(
+            3662.0.from_seconds(),
+            Time {
+                hour: 1,
+                minutes: 1,
+                seconds: 2
+            }
+        );
+    }
 }
 
-fn main() {
-    let args = Args::parse();
+fn parse(args: Args) {
     let re = Regex::new(r"^(?<hour>\d{1,5}):(?<minutes>\d{1,2}):(?<seconds>\d{1,2})$").unwrap();
-
     let Some(caps) = re.captures(&args.time) else {
         println!("Time argument must match 'hh:mm:ss' pattern");
         return;
@@ -151,5 +232,32 @@ fn main() {
         's' => println!("{}", time.to_seconds()),
         'm' => println!("{}", time.to_minutes()),
         _ => println!("{}", time.to_hours()),
+    }
+}
+
+fn decompose(args: Args) {
+    let re = Regex::new(r"^\d+(.\d+$)?").unwrap();
+    if re.is_match(&args.time) {
+        let time = args.time.parse::<f32>().unwrap();
+
+        #[cfg(debug_assertions)]
+        println!("{:?}", time);
+
+        match args.unit {
+            's' => println!("{}", time.from_seconds()),
+            'm' => println!("{}", time.from_minutes()),
+            _ => println!("{}", time.from_hours()),
+        }
+    } else {
+        println!("Time argument must match '\\d+(./\\d+)' pattern when decompose option is used");
+    }
+}
+
+fn main() {
+    let args = Args::parse();
+
+    match args.decompose {
+        true => decompose(args),
+        false => parse(args),
     }
 }

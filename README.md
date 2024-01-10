@@ -48,6 +48,28 @@ tparser 23:59:59  -u m
 tparser 23:59:59 -u s
 86399
 ```
+
+### Decompose
+Using the `--decompose`  `-d` option will expect a floating point number or integer as time argument and print the value in `hh:mm:ss` format based on the unit passed by default is hours (h)
+
+#### Decomposing hours
+```shell
+tparser 60.5085 -d
+60:30:30
+```
+
+#### Decomposing minutes
+```shell
+tparser 60 -d -u m
+1:0:0
+```
+
+#### Decomposing seconds
+```shell
+tparser 3661 -d -u s
+1:1:1
+```
+
 ### Debug
 When running debug build additional information (Time struct) will be printed
 
