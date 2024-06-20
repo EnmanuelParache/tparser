@@ -238,7 +238,13 @@ fn parse(args: Args) {
 fn decompose(args: Args) {
     let re = Regex::new(r"^\d+(.\d+$)?").unwrap();
     if re.is_match(&args.time) {
-        let time = args.time.parse::<f32>().unwrap();
+        let time_input = args.time.parse::<f32>();
+
+        let mut time: f32 = 0.0;
+        match time_input {
+            Err(err) => eprintln!("{}", err),
+            Ok(time_input) => time = time_input,
+        }
 
         #[cfg(debug_assertions)]
         println!("{:?}", time);
