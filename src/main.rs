@@ -215,7 +215,7 @@ mod tests {
 fn parse(args: Args) {
     let re = Regex::new(r"^(?<hour>\d{1,5}):(?<minutes>\d{1,2}):(?<seconds>\d{1,2})$").unwrap();
     let Some(caps) = re.captures(&args.time) else {
-        println!("Time argument must match 'hh:mm:ss' pattern");
+        eprintln!("Time argument must match 'hh:mm:ss' pattern");
         return;
     };
 
@@ -255,7 +255,7 @@ fn decompose(args: Args) {
             _ => println!("{}", time.from_hours()),
         }
     } else {
-        println!("Time argument must match '\\d+(./\\d+)' pattern when decompose option is used");
+        eprintln!("Time argument must match '\\d+(./\\d+)' pattern when decompose option is used");
     }
 }
 
