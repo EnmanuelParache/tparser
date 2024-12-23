@@ -16,7 +16,24 @@ cargo build
 cargo build --release
 ```
 
-## Install in your path
+## Install
+
+Simply install with cargo
+
+While on repo root simply run
+
+```shell
+cargo install --path .
+```
+or
+
+```shell
+cargo install --path /path/to/repo
+```
+
+Either command should install `tparser` making it available in your command line.
+
+## Install in desired path
 
 ### Mac OS (zsh)
 
